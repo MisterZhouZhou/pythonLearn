@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
-# 项目中Pipelines 文件
+
 # Define your item pipelines here
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
-# 数据持久化存储
 import json
 from scrapy.exceptions import DropItem
 
-class CnblogspiderPipeline(object):
+class ZwblogPipeline(object):
 
     def __init__(self):
         self.file = open('papers.json', 'w')

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-# 项目中到配置文件
-# Scrapy settings for cnblogSpider project
+
+# Scrapy settings for zhihuCrawl project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,14 +9,14 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'cnblogSpider'
+BOT_NAME = 'zhihuCrawl'
 
-SPIDER_MODULES = ['cnblogSpider.spiders']
-NEWSPIDER_MODULE = 'cnblogSpider.spiders'
+SPIDER_MODULES = ['zhihuCrawl.spiders']
+NEWSPIDER_MODULE = 'zhihuCrawl.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'cnblogSpider (+http://www.yourdomain.com)'
+#USER_AGENT = 'zhihuCrawl (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -47,13 +47,13 @@ ROBOTSTXT_OBEY = True
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'cnblogSpider.middlewares.CnblogspiderSpiderMiddleware': 543,
+#    'zhihuCrawl.middlewares.ZhihucrawlSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'cnblogSpider.middlewares.CnblogspiderDownloaderMiddleware': 543,
+#    'zhihuCrawl.middlewares.ZhihucrawlDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -64,21 +64,9 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-# 启动pipelines
-ITEM_PIPELINES = {
-   'cnblogSpider.pipelines.CnblogspiderPipeline': 300,
-   'scrapy.pipelines.images.ImagesPipeline': 1
-}
-
-# 图片下载的路径
-IMAGES_STORE = '/Users/zhouwei/Desktop/python/pythonLearn/cnblogSpider/cnblogs'
-IMAGES_URLS_FIELD = 'cimage_urls'
-IMAGES_RESULT_FIELD='cimages'
-IMAGES_EXPIRES = 30   # 文件有效期
-IMAGES_THUMBS = {     # 图片大小图配置
-   'small': (50, 50),
-   'big': (270, 270),
-}
+#ITEM_PIPELINES = {
+#    'zhihuCrawl.pipelines.ZhihucrawlPipeline': 300,
+#}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
