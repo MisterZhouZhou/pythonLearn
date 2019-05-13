@@ -11,4 +11,4 @@ import scrapy
 class JiandanItem(scrapy.Item):
     # define the fields for your item here like:
     image_urls = scrapy.Field()#图片的链接
-
+    # imags = scrapy.Field()

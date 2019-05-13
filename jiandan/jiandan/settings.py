@@ -66,17 +66,21 @@ ROBOTSTXT_OBEY = False
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'jiandan.pipelines.JiandanPipeline': 300,
-    # 'scrapy.pipelines.images.ImagesPipeline': 1
 }
 # 设置图片下载路径
 IMAGES_STORE='/Users/zhouwei/Desktop/python/pythonLearn/jiandan/images/'
 DOWNLOAD_DELAY = 0.25
+IMAGES_THUMBS = {     # 图片大小图配置
+   'small': (50, 50),
+   'big': (200, 200),
+}
+
 # IMAGES_URLS_FIELD = 'image_urls'
 # # IMAGES_RESULT_FIELD='cimages'
 # IMAGES_EXPIRES = 30   # 文件有效期
 # IMAGES_THUMBS = {     # 图片大小图配置
 #    'small': (50, 50),
-#    'big': (270, 270),
+#    'big': (200, 200),
 # }
 
 
