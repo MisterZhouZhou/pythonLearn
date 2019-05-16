@@ -31,7 +31,7 @@ class Parser(object):
             fileinfor.subject = subject.strip()  # 移除头尾空格
             fileinfor.filename = link.get_text().strip().replace(':', '_').replace("\r\n","").replace(u'开始学习', "").replace(' ', '')
             fileinfor.mid = link['href'].split('/')[2]
-            json_str = html_down.download(DOWNLOAD_URL.replace('{}', ID)).replace('\/', '/').encode('utf-8')
+            json_str = html_down.download(DOWNLOAD_URL.replace('{}', fileinfor.mid)).replace('\/', '/').encode('utf-8')
             # json解析
             # 解析方法一
             # dic_json = eval(json_str)

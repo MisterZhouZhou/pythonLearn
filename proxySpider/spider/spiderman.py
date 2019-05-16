@@ -11,7 +11,7 @@ class SpiderMan(object):
     def crawl_book(self, url):
         html = self.downloader.download(url)
         # 协议ip对象
-        proxys = self.parsFer.parser(html)
+        proxys = self.parser.parser(html)
         self.detect(proxys)
 
     def detect(self, proxys):

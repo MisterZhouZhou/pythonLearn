@@ -31,7 +31,7 @@ def run_ftp():
     if sys.argv[1:]:
         port = int(sys.argv[1])
     else:
-        port = 9000
+        port = 9001
     server_address = ('127.0.0.1', port)
 
     # 配置服务

@@ -1,4 +1,5 @@
 # coding:utf-8
+from gevent import monkey;monkey.patch_all()
 import config
 from config import COURSEURL
 from spider.parser import Parser
@@ -7,6 +8,7 @@ from filedeal.file_downloader import File_Downloader
 '''
 这个类是爬虫的主逻辑
 '''
+
 class SpiderMan(object):
 
     def __init__(self):
