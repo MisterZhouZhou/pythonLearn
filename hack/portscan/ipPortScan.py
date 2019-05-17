@@ -1,5 +1,8 @@
 import socket, os, sys
 
+'''
+ 端口扫描
+'''
 
 def retBanner(ip, port):
     try:
