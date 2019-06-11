@@ -1,0 +1,1 @@
+from weixinrabit.models.user import User

@@ -123,7 +123,7 @@ class Html_Parser(object):
 
     def CnproxyPraser(self, response, parser):
         proxylist = self.RegularPraser(response, parser)
-        chardict = {'v': '3', 'm': '4', 'a': '2', 'l': '9', 'q': '0', 'b': '5', 'i': '7', 'w': '6', 'r': '8', 'c': '1'}
+        chardict = {'v': '3', 'models': '4', 'a': '2', 'l': '9', 'q': '0', 'b': '5', 'i': '7', 'w': '6', 'r': '8', 'c': '1'}
 
         for proxy in proxylist:
             port = proxy['port']

@@ -10,4 +10,4 @@ cap = {
 }
 
 driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', cap)
-driver.get('https://m.baidu.com')
+driver.get('https://models.baidu.com')

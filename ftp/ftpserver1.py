@@ -1,13 +1,13 @@
 # 方法一：SimpleHTTPServer
 '''
 $ cd /home/haoel
-$ python -m SimpleHTTPServer
-$ python -m SimpleHTTPServer 8080
+$ python -models SimpleHTTPServer
+$ python -models SimpleHTTPServer 8080
 '''
 
 # python3 中``被放到了http.server中，启动方式变成
 '''
-python3 -m http.server 9090
+python3 -models http.server 9090
 '''
 
 #  访问地址：
