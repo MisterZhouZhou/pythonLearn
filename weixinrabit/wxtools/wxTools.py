@@ -29,13 +29,17 @@ def saveImageToImages(msg):
 '''
 def updateMessage(msg_dict, msg):
     import time, itchat, re, os
+    from weixinrabit.wxtools import wxUserInfo
     # 获取的是本地时间戳并格式化本地时间戳 e: 2019-02-16 13:43:20
     msg_time_rec = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     # 消息ID
     msg_id = msg['MsgId']
     # 消息时间
     msg_time = msg['CreateTime']
-    msg_from = (itchat.search_friends(userName=msg['FromUserName']))["NickName"]
+    msg_friend = wxUserInfo.getFriendWithUserName(msg['FromUserName'])
+    msg_from =  ''
+    if (msg_friend != None):
+        msg_from = msg_friend.nick_name
     # 消息内容
     msg_content = None
     # 分享的链接
@@ -49,7 +53,7 @@ def updateMessage(msg_dict, msg):
             or msg['Type'] == 'Picture':
         msg_content = r"" + msg['FileName']
         # 保存文件
-        msg['Text'](os.getcwd() + "/temps/" + msg['FileName'])
+        msg['Text']("./temps/" + msg['FileName'])
     elif msg['Type'] == 'Card':
         msg_content = msg['RecommendInfo']['NickName'] + r" 的名片"
     elif msg['Type'] == 'Map':
@@ -72,3 +76,22 @@ def updateMessage(msg_dict, msg):
             }
         }
     )
+
+
+'''
+  初始化缓存目录
+'''
+def initTempConfig():
+    import os
+    rev_tmp_dir = "./temps/"
+    if not os.path.exists(rev_tmp_dir):
+        os.makedirs(rev_tmp_dir)
+
+'''
+ 移除缓存目录
+ '''
+def removeTempConfig():
+    import os, shutil
+    rev_tmp_dir = "./temps/"
+    if os.path.exists(rev_tmp_dir):
+        shutil.rmtree(rev_tmp_dir)

@@ -1,7 +1,7 @@
 '''
-  用户信息
+  群组信息
 '''
-class User(object):
+class Group(object):
     def __init__(self, **kwargs):
         """
         init video object

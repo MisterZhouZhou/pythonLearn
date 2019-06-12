@@ -1,13 +1,22 @@
 import itchat
+from weixinrabit.models import Group
 '''
-  根据微信号获取用户信息，返回用户信息的属性字典
-  @:param user_name 用户微信账号
-  user_name='@xxb096c3036543exx2d4de4fc222xxxx'
+  根据微信群名称获取微信群信息
+  @:param group_name 微信群名称
+  group_name='1xx1'
+  
+  groupInfo = wxGroupInfo.getGroupInfoWithGroupName('呵呵')
+  itchat.send_msg("dd", toUserName=groupInfo.user_name)
 '''
-def getChatRoomInfoWithGroupName(group_name):
+def getGroupInfoWithGroupName(group_name):
     chat_rooms = itchat.search_chatrooms(name=group_name)
     if len(chat_rooms) > 0:
-        return chat_rooms[0]
+        user_name = chat_rooms[0]['UserName']
+        nick_name = chat_rooms[0]['UserName']
+        return Group(
+            user_name=user_name,
+            nick_name=nick_name
+        ) if user_name else None
 
 
 '''
