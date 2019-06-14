@@ -40,6 +40,8 @@ def send_filehelper(msg):
         '/关闭图灵': '图灵自动回复已关闭',
         '/开启轮询': '轮询已开启',
         '/关闭轮询': '轮询已关闭',
+        '/获取好友头像': '好友头像获取成功',
+        '/获取好友头像拼图': '好友头像拼图获取成功',
         '/帮助': '/帮助  显示帮助信息\n\n/配置  下载服务端配置文件\n\n /开启回复  开启自动回复\n\n /关闭回复  关闭自动回复',
     }
     if msg['Text'] == '/开启自动回复':
@@ -96,6 +98,41 @@ def send_filehelper(msg):
             sched.shutdown()
     elif msg['Text'] == '/关闭轮询':
         sched.shutdown()
+    # 好友头像
+    elif msg['Text'] == '/获取好友头像':
+        we_friends = itchat.get_friends(update=True)[:]
+        num = 0
+        for friend in we_friends:
+            img = itchat.get_head_img(userName=friend["UserName"])
+            file_image = open("./headerIcons/" + str(num) + ".jpg", 'wb')
+            file_image.write(img)
+            file_image.close()
+            num += 1
+    elif msg['Text'] == '/获取好友头像拼图':
+        save_image = './files/' + "好友头像拼接图.jpg"
+        if not os.path.exists(save_image):
+            import math
+            from PIL import Image
+            header_icons = './headerIcons/'
+            ls = os.listdir(header_icons)
+            each_size = int(math.sqrt(float(640 * 640) / len(ls)))  # 算出每张图片的大小多少合适
+            lines = int(640 / each_size)
+            # PNG是四通道, JPG是三通道
+            image = Image.new('RGB', (640, 640))  # 创建640*640px的大图
+            x, y = 0, 0
+            for i in range(0, len(ls)):
+                try:
+                    img = Image.open(header_icons + str(i) + ".jpg")
+                except IOError as e:
+                    print("Error: ", e)
+                else:
+                    img = img.resize((each_size, each_size), Image.ANTIALIAS)
+                    image.paste(img, (x * each_size, y * each_size))  # 粘贴位置
+                    x += 1
+                    if x == lines:  # 换行
+                        x = 0
+                        y += 1
+            image.save(save_image)
     itchat.send(cmd_dic[msg['Text']], toUserName='filehelper')
 
 '''
@@ -143,6 +180,17 @@ def call_me_in_frind(msg):
 # 好友/群-文本消息
 @itchat.msg_register(itchat.content.TEXT, isFriendChat=True, isGroupChat=True)
 def text_msg(msg):
+    if msg['Content'] == u'加群':
+        itchat.send_msg(str(itchat.search_friends(userName=msg['FromUserName'])['NickName']), toUserName='filehelper')
+        itchat.send_msg('您的加群信息已收到\n稍后(我也不知道多久)将会拉您进群', msg['FromUserName'])
+        itchat.send_image('timg.gif', msg['FromUserName'])  # 发送一个骚气表情包
+    elif msg['Content'] == u'公众号':
+        itchat.send_msg(
+        '#!/usr/bin/python\n#coding:utf-8\n    def ISA():\n        print("慎言善思，学以致用")\nif __name__ == "__main__":\n    ISA()',
+        msg['FromUserName'])
+        itchat.send_msg('欢迎关注我们的公众号\n', msg['FromUserName'])
+        itchat.send_image('QR_ISA.jpg', msg['FromUserName'])  # 发送公众号的二维码　　
+
     # 不是自己发送的消息，收到的信息
     if msg['FromUserName'] != wxConfigSingleton.WXConfigSingleton().my_user_name:
         # 更新聊天数据
@@ -151,6 +199,7 @@ def text_msg(msg):
         if '@@' in msg['FromUserName']:
             # 群中有人找小艾同学
             if wxTools.isCallMe(msg):
+                # 机器人回复
                 call_me_in_group(msg)
         else:  # 判断为个人消息, 为接收到的消息
             call_me_in_frind(msg)
@@ -197,7 +246,6 @@ def video_msg(msg):
             try:
                 time.sleep(random.randint(1, 2))
                 wxTools.sendFileMessage(type=msg['Type'], file_path=videoDir, to_user_name=msg['FromUserName'])
-
             except Exception as error:
                 print(error)
                 return
@@ -224,7 +272,7 @@ def attachment_files(msg):
 def add_friend(msg):
     # itchat.add_friend(**msg['Text']) # 该操作会自动将新好友的消息录入，不需要重载通讯录
     #itchat.get_contract()
-    itchat.send_msg('Nice to meet you ^_^', msg['RecommendInfo']['UserName'])
+    wxTools.sendTextMessage(msg_text='您的添加好友信息已收到\n稍后(我也不知道多久)将会同意您 ^_^', to_user_name=msg['RecommendInfo']['UserName'])
 
 
 
@@ -234,13 +282,16 @@ def add_friend(msg):
 '''
 @itchat.msg_register(itchat.content.SHARING, isFriendChat=True, isGroupChat=True)
 def group_share_replay(msg):
-    print('d')
-    return msg['Url']
-
-
+    # 判断为群聊,为接收到的消息
+    if '@@' in msg['FromUserName']:
+        nick_name = msg['ActualNickName']
+        return nick_name + '发送了一条链接:\n' + msg['Text'] + '\n' + msg['Url']
+    else:
+        nick_name = msg['User']['NickName']
+        return nick_name + '发送了一条链接:\n' + msg['Text'] + '\n' + msg['Url']
 
 '''
-  监听公众号信
+  监听公众号信息
 '''
 @itchat.msg_register(itchat.content.TEXT, isMpChat=True)
 def reply_msg(msg):
@@ -254,6 +305,10 @@ def reply_msg(msg):
 '''
 @itchat.msg_register([itchat.content.NOTE], isFriendChat=True, isGroupChat=True)
 def revoke_msg(msg):
+    if '加入了群聊' in msg['Content']:
+        item = wxGroupInfo.getGroupInfoWithGroupId(msg['FromUserName'])  # 可以改为你自己的群聊名字，首先要把群聊加入通讯录
+        chatroom = itchat.update_chatroom(item.user_name)
+        wxTools.sendTextMessage("@"+chatroom['MemberList'][-1]['NickName']+"\n欢迎新同学加入！", to_user_name=msg['FromUserName'])
     rev_tmp_dir = './temps/'
     if re.search(r"\<\!\[CDATA\[.*撤回了一条消息\]\]\>", msg['Content']) is not None:
         # 获取消息的id

@@ -12,7 +12,25 @@ def getGroupInfoWithGroupName(group_name):
     chat_rooms = itchat.search_chatrooms(name=group_name)
     if len(chat_rooms) > 0:
         user_name = chat_rooms[0]['UserName']
-        nick_name = chat_rooms[0]['UserName']
+        nick_name = chat_rooms[0]['NickName']
+        return Group(
+            user_name=user_name,
+            nick_name=nick_name
+        ) if user_name else None
+
+
+'''
+  根据微信群名称获取微信群信息
+  @:param group_name 微信群名称
+  group_id='@ddd1xx1'
+'''
+
+
+def getGroupInfoWithGroupId(group_id):
+    chat_rooms = itchat.search_chatrooms(userName=group_id)
+    if len(chat_rooms) > 0:
+        user_name = chat_rooms['UserName']
+        nick_name = chat_rooms['NickName']
         return Group(
             user_name=user_name,
             nick_name=nick_name

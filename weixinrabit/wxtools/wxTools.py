@@ -2,7 +2,7 @@
   是否有人@自己
 '''
 def isAtMe(msg):
-    return msg['isAt']
+    return msg['IsAt']
 
 
 '''
@@ -28,6 +28,8 @@ def sendTextMessage(msg_text, to_user_name):
         @vid@：在发送内容前添加，表明是视频文件，视频文件要小于20M
         如果什么都没有添加，默认是消息
     """
+    if to_user_name.find('@@') != -1:
+        to_user_name = '@' + to_user_name.split('@@')[1]
     itchat.send(msg_text, toUserName=to_user_name)
 
 '''
