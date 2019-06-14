@@ -8,61 +8,155 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 msg_dict = {}
 face_bug = None
 
+'''
+   使用小冰进行自动回复
+'''
+def auto_replayOFXB(msg):
+    defaultReply = '我现在只想模仿你:' + msg['Text']
+    mp_info = wxGroupInfo.getMpsInfoWithGroupName('小冰')
+    time.sleep(random.randint(1, 2))
+    wxTools.sendTextMessage(msg_text=msg['Text'] or defaultReply, to_user_name=mp_info['UserName'])
+
+'''
+   使用图灵进行自动回复
+'''
+def auto_replayOFTL(msg):
+    defaultReply = '我现在只想模仿你:' + msg['Text']
+    reply = wxMsgManager.get_response(msg['Text'])
+    time.sleep(random.randint(1, 2))
+    wxTools.sendTextMessage(msg_text=reply or defaultReply, to_user_name=msg['FromUserName'])
+
+'''
+   给文件助手发送指定命令
+'''
+def send_filehelper(msg):
+    # 给文件助手发消息
+    cmd_dic = {
+        '/开启自动回复': '自动回复已开启',
+        '/关闭自动回复': '自动回复已关闭',
+        '/使用小冰': '小冰自动回复已开启',
+        '/关闭小冰': '小冰自动回复已关闭',
+        '/使用图灵': '图灵自动回复已开启',
+        '/关闭图灵': '图灵自动回复已关闭',
+        '/开启轮询': '轮询已开启',
+        '/关闭轮询': '轮询已关闭',
+        '/帮助': '/帮助  显示帮助信息\n\n/配置  下载服务端配置文件\n\n /开启回复  开启自动回复\n\n /关闭回复  关闭自动回复',
+    }
+    if msg['Text'] == '/开启自动回复':
+        wxConfigSingleton.WXConfigSingleton().auto_reply = True
+        # 默认使用图灵
+        wxConfigSingleton.WXConfigSingleton().robot_type = 'tl'
+    elif msg['Text'] == '/关闭自动回复':
+        wxConfigSingleton.WXConfigSingleton().auto_reply = False
+        wxConfigSingleton.WXConfigSingleton().robot_type = ''
+    elif msg['Text'] == '/使用小冰':
+        wxConfigSingleton.WXConfigSingleton().auto_reply = True
+        wxConfigSingleton.WXConfigSingleton().robot_type = 'xb'
+    elif msg['Text'] == '/关闭小冰':
+        wxConfigSingleton.WXConfigSingleton().auto_reply = False
+        wxConfigSingleton.WXConfigSingleton().robot_type = ''
+    elif msg['Text'] == '/使用图灵':
+        wxConfigSingleton.WXConfigSingleton().auto_reply = True
+        wxConfigSingleton.WXConfigSingleton().robot_type = 'tl'
+    elif msg['Text'] == '/关闭图灵':
+        wxConfigSingleton.WXConfigSingleton().auto_reply = False
+        wxConfigSingleton.WXConfigSingleton().robot_type = ''
+    elif msg['Text'] == '/开启轮询':
+        itchat.send(cmd_dic[msg['Text']], toUserName='filehelper')
+        # 循环
+        sched.add_job(test, 'interval', seconds=5)
+        # 指定日期执行
+        #sched.add_job(tick, 'date', run_date='2016-02-14 15:23:05')
+        '''
+            job = scheduler.add_job(myfunc, 'interval', minutes=2)
+            job.remove()
+            # 如果有多个任务序列的话可以给每个任务设置ID号，可以根据ID号选择清除对象，且remove放到start前才有效
+            sched.add_job(myfunc, 'interval', minutes=2, id='my_job_id')
+            sched.remove_job('my_job_id')
+            apsched.job.Job.pause()
+            apsched.schedulers.base.BaseScheduler.pause_job()
+        '''
+        '''
+            #表示2017年3月22日17时19分07秒执行该程序
+            sched.add_job(my_job, 'cron', year=2017,month = 03,day = 22,hour = 17,minute = 19,second = 07)
+ 
+            #表示任务在6,7,8,11,12月份的第三个星期五的00:00,01:00,02:00,03:00 执行该程序
+            sched.add_job(my_job, 'cron', month='6-8,11-12', day='3rd fri', hour='0-3')
+ 
+            #表示从星期一到星期五5:30（AM）直到2014-05-30 00:00:00
+            sched.add_job(my_job(), 'cron', day_of_week='mon-fri', hour=5, minute=30,end_date='2014-05-30')
+ 
+            #表示每5秒执行该程序一次，相当于interval 间隔调度中seconds = 5
+            sched.add_job(my_job, 'cron',second = '*/5')
+        '''
+
+        try:
+            sched.start()
+        except:
+            sched.shutdown()
+    elif msg['Text'] == '/关闭轮询':
+        sched.shutdown()
+    itchat.send(cmd_dic[msg['Text']], toUserName='filehelper')
+
+'''
+   处理群消息
+'''
+def call_me_in_group(msg):
+    try:
+        if '台湾' in msg['Text']:
+            return '台湾是中国不可分割的一部分,支持祖国收复台湾,建立台湾省'
+        # 开启自动回复
+        if wxConfigSingleton.WXConfigSingleton().auto_reply == True:
+            if wxConfigSingleton.WXConfigSingleton().robot_type == 'tl':
+                # 图灵机器人
+                auto_replayOFTL(msg)
+            elif wxConfigSingleton.WXConfigSingleton().robot_type == 'xb':
+                global face_bug
+                # 从小冰获取回复消息
+                face_bug = msg['FromUserName']
+                auto_replayOFXB(msg)
+    except Exception as error:
+        print(error)
+        return
+
+'''
+   处理好友消息
+'''
+def call_me_in_frind(msg):
+    try:
+        if '台湾' in msg['Text']:
+            return '台湾是中国不可分割的一部分,支持祖国收复台湾,建立台湾省'
+        # 开启自动回复
+        if wxConfigSingleton.WXConfigSingleton().auto_reply == True:
+            if wxConfigSingleton.WXConfigSingleton().robot_type == 'tl':
+                # 图灵机器人
+                auto_replayOFTL(msg)
+            elif wxConfigSingleton.WXConfigSingleton().robot_type == 'xb':
+                global face_bug
+                # 从小冰获取回复消息
+                face_bug = msg['FromUserName']
+                auto_replayOFXB(msg)
+    except Exception as error:
+        print(error)
+        return
+
 # 好友/群-文本消息
 @itchat.msg_register(itchat.content.TEXT, isFriendChat=True, isGroupChat=True)
 def text_msg(msg):
-    global face_bug
     # 不是自己发送的消息，收到的信息
     if msg['FromUserName'] != wxConfigSingleton.WXConfigSingleton().my_user_name:
+        # 更新聊天数据
+        wxTools.updateMessage(msg_dict, msg)
         # 判断为群聊,为接收到的消息
         if '@@' in msg['FromUserName']:
             # 群中有人找小艾同学
             if wxTools.isCallMe(msg):
-                try:
-                    defaultReply = '我现在只想模仿你:' + msg['Text']
-                    # 在测试的发现他是无关政治，我想这句我要加上
-                    if '台湾' in msg['Text']:
-                        return '台湾是中国不可分割的一部分,支持祖国收复台湾,建立台湾省'
-
-                    reply = wxMsgManager.get_response(msg['Text'])
-                    # 更新聊天数据
-                    wxTools.updateMessage(msg_dict, msg)
-                    return reply or defaultReply
-                except Exception as error:
-                    print(error)
-                    return
+                call_me_in_group(msg)
         else:  # 判断为个人消息, 为接收到的消息
-            # 为了保证在图灵Key出现问题的时候仍旧可以回复，这里设置一个默认回复
-            try:
-                defaultReply = '我现在只想模仿你:' + msg['Text']
-                # 在测试的发现他是无关政治，我想这句我要加上
-                if '台湾' in msg['Text']:
-                    return '台湾是中国不可分割的一部分,支持祖国收复台湾,建立台湾省'
-                reply = wxMsgManager.get_response(msg['Text'])
-                # 更新聊天数据
-                wxTools.updateMessage(msg_dict, msg)
-                # return reply or defaultReply
-
-                # 从小冰获取回复消息
-                face_bug = msg['FromUserName']
-                mp_info = wxGroupInfo.getMpsInfoWithGroupName('小冰')
-                itchat.send(msg['Text'], toUserName=mp_info['UserName'])
-            except Exception as error:
-                print(error)
-                return
+            call_me_in_frind(msg)
     else:
-        cmd_dic = {
-            '/开启回复': '自动回复已开启',
-            '/关闭回复': '自动回复已关闭',
-            '/配置': '@fil@conf/reply.xls',
-            '/帮助': '/帮助  显示帮助信息\n\n/配置  下载服务端配置文件\n\n群发:x\nx为纯数字,下一条消息将被转发到配置的群分组\n\n/开启回复  开启自动回复\n\n/关闭回复  关闭自动回复',
-        }
-        if msg['Text'] == '/开启回复':
-            wxConfigSingleton.WXConfigSingleton().auto_reply = True
-        if msg['Text'] == '/关闭回复':
-            wxConfigSingleton.WXConfigSingleton().auto_reply = False
-        itchat.send(cmd_dic[msg['Text']], toUserName='filehelper')
-
+        if msg['ToUserName'] == 'filehelper':
+            send_filehelper(msg)
 
 
 # 好友/群-图片消息
@@ -70,53 +164,57 @@ def text_msg(msg):
 def image_msg(msg):
     # 不是自己发送的消息，收到的信息
     if msg['FromUserName'] != wxConfigSingleton.WXConfigSingleton().my_user_name:
-        try:
-            defaultReplay = 'I love picture'
-            # 以下方法会下载文件
-            path = './images/'  # 图片路径
-            dirs = os.listdir(path)
-            # 保存图片
-            # wxTools.saveImageToImages(msg)
-            typeSymbol = {'Picture': 'img', 'Video': 'vid'}.get(msg['Type'], 'fil')
-            reply = '@%s@%s' % (typeSymbol, path + random.choice(dirs))
-            # 更新聊天数据
-            wxTools.updateMessage(msg_dict, msg)
-            time.sleep(random.randint(1, 2))
-            return reply or defaultReplay
-
-        except Exception as error:
-            print(error)
-            return
+        path = './images/'  # 图片路径
+        imageDir = path + msg['FileName']
+        # 保存文件
+        if not os.path.exists(imageDir):
+            wxTools.save_image_to_images(msg)
+        # 更新聊天数据
+        wxTools.updateMessage(msg_dict, msg)
+        # 开启自动回复
+        if wxConfigSingleton.WXConfigSingleton().auto_reply == True:
+            try:
+                # 以下方法会下载文件
+                dirs = os.listdir(path)
+                wxTools.sendFileMessage(type=msg['Type'], file_path=path + random.choice(dirs),to_user_name=msg['FromUserName'])
+            except Exception as error:
+                print(error)
+                return
 
 
 # 好友/群-视频消息
 @itchat.msg_register([itchat.content.VIDEO], isFriendChat=True, isGroupChat=True)
-def friend_video_msg(msg):
+def video_msg(msg):
     # 不是自己发送的消息，收到的信息
     if msg['FromUserName'] != wxConfigSingleton.WXConfigSingleton().my_user_name:
+        # 保存文件
+        videoDir = './videos/' + msg['FileName']
+        if not os.path.exists(videoDir):
+            wxTools.save_video_to_videos(msg)
         # 更新聊天数据
         wxTools.updateMessage(msg_dict, msg)
-        # return '有人发视频'
-        try:
-            defaultReplay = 'I love picture'
-        #     # 以下方法会下载文件
-        #     path = './images/'  # 图片路径
-        #     dirs = os.listdir(path)
-        #     # 保存图片
-            #wxTools.saveImageToImages(msg)
-        #msg['Text'](msg['FileName'])
-            typeSymbol = {'Picture': 'img', 'Video': 'vid'}.get(msg['Type'], 'fil')
-            reply = '@fil@190612-183933.mp4'
-        #     # 更新聊天数据
-        #     wxTools.updateMessage(msg_dict, msg)
-        #     # 发送消息
-            time.sleep(random.randint(1, 2))
-            itchat.send_video('190612-183933.mp4', toUserName=msg['FromUserName'])
+        if wxConfigSingleton.WXConfigSingleton().auto_reply == True:
+            try:
+                time.sleep(random.randint(1, 2))
+                wxTools.sendFileMessage(type=msg['Type'], file_path=videoDir, to_user_name=msg['FromUserName'])
 
-            # return reply or defaultReplay
-        except Exception as error:
-            print(error)
-            return
+            except Exception as error:
+                print(error)
+                return
+
+# 好友/群-文件消息
+@itchat.msg_register(itchat.content.ATTACHMENT, isFriendChat=True, isGroupChat=True)
+def attachment_files(msg):
+    fileDir = './files/'+msg['FileName']
+    # 不是自己发送的消息，收到的信息
+    if msg['FromUserName'] != wxConfigSingleton.WXConfigSingleton().my_user_name:
+        # 保存文件
+        if not os.path.exists(fileDir):
+            wxTools.save_file_to_files(msg)
+        # 开启自动回复
+        if wxConfigSingleton.WXConfigSingleton().auto_reply == True:
+            time.sleep(random.randint(1, 2))
+            wxTools.sendFileMessage(type=msg['Type'], file_path=fileDir, to_user_name=msg['FromUserName'])
 
 
 '''
@@ -125,9 +223,10 @@ def friend_video_msg(msg):
 @itchat.msg_register(itchat.content.FRIENDS)
 def add_friend(msg):
     # itchat.add_friend(**msg['Text']) # 该操作会自动将新好友的消息录入，不需要重载通讯录
-    # msg.user.verify()
-    #msg.user.send('Nice to meet you!')
+    #itchat.get_contract()
     itchat.send_msg('Nice to meet you ^_^', msg['RecommendInfo']['UserName'])
+
+
 
 
 '''
@@ -181,11 +280,12 @@ def revoke_msg(msg):
                     or old_msg["msg_type"] == "Attachment":
                 file = rev_tmp_dir + old_msg['msg_content']
                 itchat.send('@fil@%s' % file, toUserName='filehelper')
-                #itchat.send(file, toUserName='filehelper')
-                #os.remove(rev_tmp_dir + old_msg['msg_content'])
+                os.remove(rev_tmp_dir + old_msg['msg_content'])
             # 删除字典旧消息
             msg_dict.pop(old_msg_id)
 
+def test():
+    wxTools.sendTextMessage(msg_text='dd', to_user_name='filehelper')
 
 '''
   用户多开
@@ -201,14 +301,6 @@ def multipUser():
     newInstance = itchat.new_instance()
     newInstance.auto_login(hotReload=True, statusStorageDir='newInstance.pkl')
     newInstance.run()
-
-# 发送信息
-def send_msg():
-    user_info = itchat.search_friends(name='培杰')
-    if len(user_info) > 0:
-        user_name = user_info[0]['UserName']
-        itchat.send_msg('生日快乐哦！', toUserName=user_name)
-
 
 '''
   登录后调用
@@ -243,18 +335,10 @@ def initConfig():
   修改程序不用多次扫码,我们使用热启动
 '''
 if __name__ == '__main__':
-    # sched = BlockingScheduler()
+    sched = BlockingScheduler()
     itchat.auto_login(hotReload=True, loginCallback=after_login, exitCallback=after_logout)
-    #itchat.send('@img@%s' % "./images/190611-153938.png", toUserName='filehelper')
-    # itchat.send('@fil@%s' % "./index.py", toUserName='filehelper')
-
-    # itchat.send('@img@%s' % "./images/181203-175233.gif", toUserName='filehelper')
-    # itchat.send_msg('ddd', toUserName='filehelper')
-    # itchat.send_image(os.getcwd()+"/images/190611-153938.png", toUserName='filehelper')
     # 初始化默认配置
     initConfig()
-    # itchat.send('@vid@%s' % './temps/190612-165953.mp4', toUserName='filehelper')
-    #fileexist =itchat.send_video('aa4e76876465435ca7a8be3c2b2beab0.mp4', toUserName='filehelper')
     itchat.run(debug=True)
 
 

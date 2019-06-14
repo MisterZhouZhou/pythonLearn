@@ -17,4 +17,6 @@ class WXConfigSingleton(object):
     auto_reply = False
     # 自己的id
     my_user_name = ''
+    # 机器人类型, xb(小冰),tl(图灵)
+    robot_type = ''
 

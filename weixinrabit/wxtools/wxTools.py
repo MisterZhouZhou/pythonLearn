@@ -16,12 +16,61 @@ def isCallMe(msg):
 
 
 '''
+  是否有人提到小艾
+'''
+def sendTextMessage(msg_text, to_user_name):
+    import itchat
+    """
+        如果单纯的使用send函数，需要对发送内容进行标注。
+        @fil@：在发送内容前添加，表明是发送文件
+        @img@：在发送内容前添加，表明是图片文件
+        @msg@：在发送内容前添加，表明是消息
+        @vid@：在发送内容前添加，表明是视频文件，视频文件要小于20M
+        如果什么都没有添加，默认是消息
+    """
+    itchat.send(msg_text, toUserName=to_user_name)
+
+'''
+  发送文件/图片/视频消息
+  @:param type:  Picture, Video
+'''
+def sendFileMessage(type, to_user_name=None, file_path=None):
+    import time, random, itchat
+    typeSymbol = {'Picture': 'img', 'Video': 'vid'}.get(type, 'fil')
+    reply = '@%s@%s' % (typeSymbol, file_path)
+    if to_user_name == None:
+        return reply
+    if to_user_name.find('@@') != -1:
+        to_user_name = '@' + to_user_name.split('@@')[1]
+    # 发送消息
+    time.sleep(random.randint(1, 2))
+    itchat.send(reply, toUserName=to_user_name)
+
+
+'''
   保存图片
 '''
-def saveImageToImages(msg):
+def save_image_to_images(msg):
     path = './images/'  # 图片路径
     # 保存的会有一样的图片。。。
     msg['Text'](path+msg['FileName'])
+
+'''
+  保存文件
+'''
+def save_file_to_files(msg):
+    path = './files/'  # 图片路径
+    # 保存的会有一样的图片。。。
+    msg['Text'](path+msg['FileName'])
+
+'''
+  保存文件
+'''
+def save_video_to_videos(msg):
+    path = './videos/'  # 图片路径
+    # 保存的会有一样的图片。。。
+    msg['Text'](path+msg['FileName'])
+
 
 
 '''
