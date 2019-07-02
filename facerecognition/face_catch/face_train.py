@@ -196,7 +196,7 @@ class Model:
             image = resize_image(image)
             image = image.reshape((1, IMAGE_SIZE, IMAGE_SIZE, 3))
 
-            # 浮点并归一化
+        # 浮点并归一化
         image = image.astype('float32')
         image /= 255
 
