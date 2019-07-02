@@ -36,4 +36,5 @@ def video_demo():
     cv.destroyAllWindows()  # 丢弃所有窗口
 
 if __name__ == '__main__':
-    video_demo()
+    # video_demo()
+    cv.CascadeClassifier("haarcascade_frontalface_alt.xml")
