@@ -19,7 +19,7 @@ if key == ord('q'):
     g_pic = np.zeros((424, 600, 3), np.uint8)
     g_pic[:, :, 1] = g
     cv2.imshow('g_pic', g_pic)
-    cv2.imwrite('../pic/g_pic.jpg', g_pic)
+    cv2.imwrite('../images/g_pic.jpg', g_pic)
     cv2.waitKey(2000)
     cv2.destroyAllWindows()
 
@@ -27,33 +27,33 @@ if key == ord('q'):
     r_pic = np.zeros((424, 600, 3), np.uint8)
     r_pic[:, :, 2] = r
     cv2.imshow('r_pic', r_pic)
-    cv2.imwrite('../pic/r_pic.jpg', r_pic)
+    cv2.imwrite('../images/r_pic.jpg', r_pic)
     cv2.waitKey(2000)
     cv2.destroyAllWindows()
 
 
     ### 双色混合图片
     # green、red通道混合，其他通道全部置０
-    gr_pic = cv2.imread('../pic/girl.jpg')
+    gr_pic = cv2.imread('../images/girl.jpg')
     gr_pic[:, :, 0] = 0
     cv2.imshow('gr_pic', gr_pic)
-    cv2.imwrite('../pic/gr_pic.jpg', gr_pic)
+    cv2.imwrite('../images/gr_pic.jpg', gr_pic)
     cv2.waitKey(2000)
     cv2.destroyAllWindows()
 
     # blue、red通道混合，其他通道全部置０
-    br_pic = cv2.imread('../pic/girl.jpg')
+    br_pic = cv2.imread('../images/girl.jpg')
     br_pic[:, :, 1] = 0
     cv2.imshow('br_pic', br_pic)
-    cv2.imwrite('../pic/br_pic.jpg', br_pic)
+    cv2.imwrite('../images/br_pic.jpg', br_pic)
     cv2.waitKey(2000)
     cv2.destroyAllWindows()
 
     # blue、green通道混合，其他通道全部置０
-    bg_pic = cv2.imread('../pic/girl.jpg')
+    bg_pic = cv2.imread('../images/girl.jpg')
     bg_pic[:, :, 2] = 0
     cv2.imshow('bg_pic', bg_pic)
-    cv2.imwrite('../pic/bg_pic.jpg', bg_pic)
+    cv2.imwrite('../images/bg_pic.jpg', bg_pic)
     cv2.waitKey(2000)
     cv2.destroyAllWindows()
 
@@ -65,7 +65,7 @@ if key == ord('q'):
     rgb_pic[:, :, 1] = g
     rgb_pic[:, :, 2] = b
     cv2.imshow('rgb_pic', rgb_pic)
-    cv2.imwrite('../pic/rgb_pic.jpg', rgb_pic)
+    cv2.imwrite('../images/rgb_pic.jpg', rgb_pic)
     cv2.waitKey(2000)
     cv2.destroyAllWindows()
 
@@ -75,6 +75,6 @@ if key == ord('q'):
     bgr_pic[:, :, 1] = g
     bgr_pic[:, :, 2] = r
     cv2.imshow('bgr_pic', bgr_pic)
-    cv2.imwrite('../pic/bgr_pic.jpg', bgr_pic)
+    cv2.imwrite('../images/bgr_pic.jpg', bgr_pic)
     cv2.waitKey(2000)
     cv2.destroyAllWindows()

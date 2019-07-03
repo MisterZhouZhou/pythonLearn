@@ -29,8 +29,8 @@ def CatchUsbVideo(window_name, camera_idx):
                 cv2.rectangle(frame, (x-10, y-10), (x + w + 10, y + h + 10), color, 2)
                 # 显示当前捕捉到了多少人脸图片了，这样站在那里被拍摄时心里有个数
                 # num += 1
-                # font = cv2.FONT_HERSHEY_SIMPLEX
-                # cv2.putText(frame, 'num:%d' % (num), (x + 30, y + 30), font, 1, (255, 0, 255), 4)
+                # fonts = cv2.FONT_HERSHEY_SIMPLEX
+                # cv2.putText(frame, 'num:%d' % (num), (x + 30, y + 30), fonts, 1, (255, 0, 255), 4)
         # 显示图像
         cv2.imshow(window_name, frame)
         key = cv2.waitKey(10)

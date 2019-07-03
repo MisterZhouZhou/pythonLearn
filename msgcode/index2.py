@@ -23,7 +23,7 @@ image = PIL.Image.new('RGB', (width, height), (255, 255, 255))
 #RGB文件：RGB色彩模式是工业界的一种颜色标准，是通过对红®、绿(G)、蓝(B)三个颜色通道的变化以及它们相互之间的叠加来得到各式各样的颜色的，RGB即是代表红、绿、蓝三个通道的颜色
 
 #创建font对象
-font = PIL.ImageFont.truetype('font.ttf', 36)
+font = PIL.ImageFont.truetype('fonts.ttf', 36)
 
 #加载一个TrueType或者OpenType字体文件，并且创建一个字体对象，这里的路径可以打开控制面板->字体->选择一种字体，将字体样式的路径复制到这里这个函数从指定的文件加载了一个字体对象，并且为指定大小的字体创建了字体对象。
 

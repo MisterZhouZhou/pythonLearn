@@ -13,9 +13,9 @@ Min_Max = [(0, 50), (0, 100), (0, 150), (0, 200), (0, 250),
 pic = cv2.imread('girl.jpg')
 
 try:
-    os.mkdir('pic/pretreated_with_Gaussian_filter')
-    os.mkdir('pic/without_Gaussian_filter')
-    os.mkdir('pic/concatenate')
+    os.mkdir('images/pretreated_with_Gaussian_filter')
+    os.mkdir('images/without_Gaussian_filter')
+    os.mkdir('images/concatenate')
 except OSError:
     pass
 
@@ -28,7 +28,7 @@ for min_max in Min_Max:
     # cv2.imshow('canny_edge[{:>03},{:>03}]'.format(min, max), edges)
     # cv2.waitKey(2000)
     # cv2.destroyAllWindows()
-    cv2.imwrite('pic/without_Gaussian_filter/canny_edge[{:>03},{:>03}].jpg'.format(min, max), edges)
+    cv2.imwrite('images/without_Gaussian_filter/canny_edge[{:>03},{:>03}].jpg'.format(min, max), edges)
 
 
 # 有先经过　高斯滤波处理　去除噪声
@@ -42,11 +42,11 @@ for min_max in Min_Max:
     # cv2.imshow('canny_edge[{:>03},{:>03}]'.format(min, max), edges)
     # cv2.waitKey(2000)
     # cv2.destroyAllWindows()
-    cv2.imwrite('pic/pretreated_with_Gaussian_filter/canny_edge[{:>03},{:>03}].jpg'.format(min, max), edges)
+    cv2.imwrite('images/pretreated_with_Gaussian_filter/canny_edge[{:>03},{:>03}].jpg'.format(min, max), edges)
 
 
 # 组合显示图片　进行对比
-image_no_gaussian_paths = [os.path.join('pic/without_Gaussian_filter', path) for path in os.listdir('pic/without_Gaussian_filter')]
+image_no_gaussian_paths = [os.path.join('images/without_Gaussian_filter', path) for path in os.listdir('images/without_Gaussian_filter')]
 image_with_gaussian_paths = [path.replace('without_Gaussian_filter', 'pretreated_with_Gaussian_filter') for path in image_no_gaussian_paths]
 
 for (image_no_gaussian_path, image_with_gaussian_path) in zip(image_no_gaussian_paths, image_with_gaussian_paths):
@@ -56,4 +56,4 @@ for (image_no_gaussian_path, image_with_gaussian_path) in zip(image_no_gaussian_
     # cv2.imshow(image_no_gaussian_path[-23:-4], concat_pic)
     # cv2.waitKey(2000)
     # cv2.destroyAllWindows()
-    cv2.imwrite('pic/concatenate/{:>03}.jpg'.format(image_no_gaussian_path[-23:-4]), concat_pic)
+    cv2.imwrite('images/concatenate/{:>03}.jpg'.format(image_no_gaussian_path[-23:-4]), concat_pic)

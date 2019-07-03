@@ -53,7 +53,6 @@ def read_path(path_name):
 
                 images.append(image)
                 # labels.append(path_name)
-                print(path_name)
                 labels.append(path_name.split('/')[-1])
 
     return images, labels

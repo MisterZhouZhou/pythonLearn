@@ -41,7 +41,7 @@ def createImg():
     # 获取图片画笔，用于描绘字
     draw = ImageDraw.Draw(img)
     # 修改字体
-    font = ImageFont.truetype(font="font.ttf", size=36)
+    font = ImageFont.truetype(font="fonts.ttf", size=36)
     for i in range(5):
         # 随机生成5种字符+5种颜色
         random_txt = getRandomChar()
