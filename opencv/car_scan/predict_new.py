@@ -410,7 +410,7 @@ class CardPredictor:
                 color = "blue"
                 limit1 = 100
                 limit2 = 124  # 有的图片有色偏偏紫
-            elif black + white >= card_img_count * 0.7:  # TODO
+            elif black + white >= card_img_count * 0.7:
                 color = "bw"
             print(color)
             colors.append(color)
