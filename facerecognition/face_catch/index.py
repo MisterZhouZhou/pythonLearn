@@ -1,8 +1,5 @@
 # -*- coding: UTF-8 -*-
-
 import cv2
-import sys
-from PIL import Image
 
 def CatchUsbVideo(window_name, camera_idx):
     cv2.namedWindow(window_name)

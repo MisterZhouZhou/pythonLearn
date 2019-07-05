@@ -1,8 +1,4 @@
 import cv2
-import sys
-
-from PIL import Image
-
 '''
 获取训练模型
 '''
