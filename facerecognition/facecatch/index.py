@@ -4,15 +4,17 @@ import cv2
 def CatchUsbVideo(window_name, camera_idx):
     cv2.namedWindow(window_name)
     # 视频来源，可以来自一段已存好的视频，也可以直接来自USB摄像头
-    cap = cv2.VideoCapture(camera_idx)
+    # cap = cv2.VideoCapture(camera_idx)
+    video = "http://admin:admin@192.168.1.103:8081/"
+    cap = cv2.VideoCapture(video)
     # 告诉OpenCV使用人脸识别分类器
     classfier = cv2.CascadeClassifier("/usr/local/lib/python3.7/site-packages/cv2/data/haarcascade_frontalface_alt2.xml")
     # 识别出人脸后要画的边框的颜色，RGB格式
     color = (0, 0, 255)
-    # num = 0
+    num = 0
     while cap.isOpened():
         ok, frame = cap.read() #读取一帧数据
-        frame = cv2.flip(frame, 1)  # 水平反转
+        # frame = cv2.flip(frame, 1)  # 水平反转
         if not ok:
             break
         # 将当前帧转换成灰度图像
@@ -25,12 +27,12 @@ def CatchUsbVideo(window_name, camera_idx):
                 x, y, w, h = faceRect
                 cv2.rectangle(frame, (x-10, y-10), (x + w + 10, y + h + 10), color, 2)
                 # 显示当前捕捉到了多少人脸图片了，这样站在那里被拍摄时心里有个数
-                # num += 1
-                # fonts = cv2.FONT_HERSHEY_SIMPLEX
-                # cv2.putText(frame, 'num:%d' % (num), (x + 30, y + 30), fonts, 1, (255, 0, 255), 4)
+                num += 1
+                fonts = cv2.FONT_HERSHEY_SIMPLEX
+                cv2.putText(frame, 'num:%d' % (num), (x + 30, y + 30), fonts, 1, (255, 0, 255), 4)
         # 显示图像
         cv2.imshow(window_name, frame)
-        key = cv2.waitKey(10)
+        key = cv2.waitKey(1)
         if key & 0xFF == ord('q'):
             break
     # 释放摄像头并销毁所有窗口

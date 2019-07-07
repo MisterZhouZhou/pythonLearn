@@ -1,10 +1,9 @@
 # coding:utf-8
 import cv2
 
-cv2.HoughLinesP
 cv2.namedWindow('W1', 0)
 cv2.resizeWindow('W1', 600, 480)
-cv2.moveWindow("trans:",1000,100)
+cv2.moveWindow("trans:", 1000, 100)
 
 def test():
 

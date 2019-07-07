@@ -8,7 +8,7 @@ from keras.optimizers import SGD
 from keras.utils import np_utils
 from keras.models import load_model
 from keras import backend as K
-from facerecognition.face_catch.load_data import load_dataset, resize_image, IMAGE_SIZE
+from facerecognition.facecatch.load_data import load_dataset, resize_image, IMAGE_SIZE
 
 class Dataset:
     def __init__(self, path_name):
