@@ -9,7 +9,6 @@ else:
     from urlparse import parse_qs
     from BaseHTTPServer import BaseHTTPRequestHandler
 
-
 class NoticeHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         query = self.path.split('?', 1)
