@@ -3,7 +3,7 @@
 '''
 import cv2
 import numpy as np
-from opencv.utils import rect
+from opencv_demo.utils import rect
 
 
 #读入要检测的图片，此处读入单张图片。如果分辨率足够好的话，我们也可以使用笔记本电脑的摄像头。

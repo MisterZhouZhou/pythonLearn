@@ -2,7 +2,7 @@ import cv2 as cv
 
 def video_demo():
     count = 1
-    saveDir = '/Users/zhouwei/Desktop/python/pythonLearn/opencv/'
+    saveDir = '/Users/zhouwei/Desktop/python/pythonLearn/opencv_demo/'
     capture = cv.VideoCapture(0)
     width, height, w = 640, 480, 360
     capture.set(cv.CAP_PROP_FRAME_WIDTH, width)
