@@ -33,7 +33,7 @@ def test():
         cv2.line(frame, (0, 2*divide_y), (width, 2*divide_y), (0, 255, 255), 1)
 
         # 使用人脸识别分类器，读入分类器
-        cascade = cv2.CascadeClassifier("/usr/local/lib/python3.7/site-packages/cv2/data/haarcascade_frontalface_alt2.xml")
+        cascade = cv2.CascadeClassifier("/usr/local/libs/python3.7/site-packages/cv2/data/haarcascade_frontalface_alt2.xml")
         # 利用分类器识别出哪个区域为人脸
         faceRects = cascade.detectMultiScale(frame_gray, scaleFactor=1.2, minNeighbors=1, minSize=(32, 32))
         if len(faceRects) > 0:

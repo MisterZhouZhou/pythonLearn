@@ -2,8 +2,8 @@
 import cv2
 
 # 运行之前，检查cascade文件路径是否在相应的目录下
-face_cascade = cv2.CascadeClassifier('/usr/local/lib/python3.7/site-packages/cv2/data/haarcascade_frontalface_default.xml')
-eye_cascade = cv2.CascadeClassifier('/usr/local/lib/python3.7/site-packages/cv2/data/haarcascade_eye.xml')
+face_cascade = cv2.CascadeClassifier('/usr/local/libs/python3.7/site-packages/cv2/data/haarcascade_frontalface_default.xml')
+eye_cascade = cv2.CascadeClassifier('/usr/local/libs/python3.7/site-packages/cv2/data/haarcascade_eye.xml')
 
 # 读取图像
 img = cv2.imread('../images/girl.jpg')

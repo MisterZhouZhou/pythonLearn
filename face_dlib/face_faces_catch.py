@@ -135,7 +135,7 @@ def draw_jaw(img, shape):
 # 使用特征提取器get_frontal_face_detector
 detector = dlib.get_frontal_face_detector()
 # dlib的68点模型，使用训练好的特征预测器
-predictor = dlib.shape_predictor("data/lib/shape_predictor_68_face_landmarks.dat")
+predictor = dlib.shape_predictor("data/libs/shape_predictor_68_face_landmarks.dat")
 # 使用电脑自带摄像头
 cap = cv2.VideoCapture(0)
 font = cv2.FONT_HERSHEY_SIMPLEX

@@ -15,8 +15,8 @@ class Face_recognition():
         self.cap = cv2.VideoCapture(0)
 
         # 人脸识别分类器本地存储路径
-        self.cascade_path = "/usr/local/lib/python3.7/site-packages/cv2/data/haarcascade_frontalface_alt2.xml"
-        # self.cascade_path = "/usr/local/lib/python3.7/site-packages/cv2/data/haarcascade_frontalface_default.xml"
+        self.cascade_path = "/usr/local/libs/python3.7/site-packages/cv2/data/haarcascade_frontalface_alt2.xml"
+        # self.cascade_path = "/usr/local/libs/python3.7/site-packages/cv2/data/haarcascade_frontalface_default.xml"
 
     def recongition(self):
         while True:

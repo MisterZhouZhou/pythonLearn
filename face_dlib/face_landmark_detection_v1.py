@@ -9,7 +9,7 @@ import numpy as np
 #dlib预测器
 detector = dlib.get_frontal_face_detector()    #使用dlib库提供的人脸提取器
 # Dlib 的 68点模型
-predictor = dlib.shape_predictor('data/lib/shape_predictor_68_face_landmarks.dat')   #构建特征提取器
+predictor = dlib.shape_predictor('data/libs/shape_predictor_68_face_landmarks.dat')   #构建特征提取器
 
 # 图片所在路径
 img = cv2.imread('data/imgs/faces_2.jpeg')

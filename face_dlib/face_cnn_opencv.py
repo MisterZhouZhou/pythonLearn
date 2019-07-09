@@ -5,7 +5,7 @@ import cv2
 '''
 
 # 使用 Dlib导入cnn模型
-detector = dlib.cnn_face_detection_model_v1('data/lib/mmod_human_face_detector.dat')
+detector = dlib.cnn_face_detection_model_v1('data/libs/mmod_human_face_detector.dat')
 
 # 图片所在路径
 img = cv2.imread('data/imgs/faces_2.jpeg')
