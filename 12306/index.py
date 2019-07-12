@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from splinter.browser import Browser
+from splinter import Browser
 from time import sleep
 import sys
 
@@ -72,6 +72,7 @@ class BrushTicket(object):
         # 浏览器驱动信息，驱动下载页：https://sites.google.com/a/chromium.org/chromedriver/downloads
         self.driver_name = 'chrome'
         self.driver = Browser("chrome")
+        # self.driver = ChromeWebDriver("chrome")
     def do_login(self):
         """登录功能实现，手动识别验证码进行登录"""
         self.driver.visit(self.login_url)
@@ -141,8 +142,10 @@ class BrushTicket(object):
                                         print(bander + ' 刷到票了（余票数：' + str(
                                             current_tr.find_by_tag('td')[seat_type_index].text) + '），开始尝试预订……')
                                         current_tr.find_by_css('td.no-br>a')[0].click()
+                                        print(current_tr)
                                         sleep(1)
                                         key_value = 1
+
                                         for p in self.passengers:
                                             # 选择用户
                                             print('开始选择用户……')
@@ -158,6 +161,7 @@ class BrushTicket(object):
                                             if p[-1] == ')':
                                                 self.driver.find_by_id('dialog_xsertcj_ok').click()
                                         print('正在提交订单……')
+                                        '''
                                         self.driver.find_by_id('submitOrder_id').click()
                                         sleep(2)
                                         # 查看放回结果是否正常
@@ -171,9 +175,11 @@ class BrushTicket(object):
                                             continue
                                         print('正在确认订单……')
                                         self.driver.find_by_id('qr_submit_id').click()
+                                        '''
                                         print('预订成功，请及时前往支付……')
                         else:
-                            print('不存在当前车次【%s】，已结束当前刷票，请重新开启！' % self.number)
+                            # print('不存在当前车次【%s】，已结束当前刷票，请重新开启！' % self.number)
+                            print('不存在当前车次，已结束当前刷票，请重新开启！')
                             sys.exit(1)
                 except Exception as error_info:
                     print(error_info)
@@ -181,11 +187,11 @@ class BrushTicket(object):
             print(error_info)
 if __name__ == '__main__':
     # nya
-    passengers=['***'] # 用户名
-    from_time='2019-02-01' # 出发日期
+    passengers=['周巍'] # 用户名
+    from_time='2019-07-13' # 出发日期
     from_station='%u4E0A%u6D77%2CSHH'  # 起始站点 - 来自12306 余票查询 请求 - cookie （此处 - 上海）
     to_station='%u6C11%u6743%2CMQF' # 结束站点 （此处 - 民权）
-    number_seat=['K4054:硬座,无座','K4168:硬座,无座'] # 车次：座位类型
+    number_seat=['K152:硬座,无座','K4916:硬座,无座'] # 车次：座位类型
     # 开始抢票
     ticket = BrushTicket(passengers, from_time, from_station, to_station, number_seat)
     ticket.start_brush()
